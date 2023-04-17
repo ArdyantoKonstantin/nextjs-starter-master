@@ -19,10 +19,15 @@ export class ExamNextJsBackEnd {
     }
 
     /**
+     * @param id (optional) 
      * @return Success
      */
-    cartsAll(): Promise<Cart[]> {
-        let url_ = this.baseUrl + "/api/Carts";
+    cartsGET(id: string | undefined): Promise<number> {
+        let url_ = this.baseUrl + "/api/Carts?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
@@ -33,17 +38,17 @@ export class ExamNextJsBackEnd {
         };
 
         return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processCartsAll(_response);
+            return this.processCartsGET(_response);
         });
     }
 
-    protected processCartsAll(response: Response): Promise<Cart[]> {
+    protected processCartsGET(response: Response): Promise<number> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as Cart[];
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as number;
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -51,7 +56,7 @@ export class ExamNextJsBackEnd {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<Cart[]>(null as any);
+        return Promise.resolve<number>(null as any);
     }
 
     /**
@@ -98,7 +103,7 @@ export class ExamNextJsBackEnd {
     /**
      * @return Success
      */
-    cartsAll2(id: string): Promise<CartDetailModel[]> {
+    cartsAll(id: string): Promise<CartDetailModel[]> {
         let url_ = this.baseUrl + "/api/Carts/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -113,11 +118,11 @@ export class ExamNextJsBackEnd {
         };
 
         return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processCartsAll2(_response);
+            return this.processCartsAll(_response);
         });
     }
 
-    protected processCartsAll2(response: Response): Promise<CartDetailModel[]> {
+    protected processCartsAll(response: Response): Promise<CartDetailModel[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -138,7 +143,7 @@ export class ExamNextJsBackEnd {
      * @param body (optional) 
      * @return Success
      */
-    carts(id: string, body: Cart | undefined): Promise<void> {
+    cartsPUT(id: string, body: Cart | undefined): Promise<void> {
         let url_ = this.baseUrl + "/api/Carts/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -156,11 +161,11 @@ export class ExamNextJsBackEnd {
         };
 
         return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processCarts(_response);
+            return this.processCartsPUT(_response);
         });
     }
 
-    protected processCarts(response: Response): Promise<void> {
+    protected processCartsPUT(response: Response): Promise<void> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
