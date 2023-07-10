@@ -48,7 +48,7 @@
     "antd": "5.4.0",
     "dayjs": "1.11.7",
     "http-proxy": "1.18.1",
-    "jotai": "2.0.3",
+    "jotai": "2.2.2",
     "lodash.debounce": "^4.0.8",
     "next": "13.3.0",
     "next-auth": "4.22.0",
